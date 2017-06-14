@@ -1,0 +1,37 @@
+package listenersTree;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JOptionPane;
+
+import dialogs.EditDeleteSlotDialog;
+import model.Page;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class DeleteChoosenSlot implements ActionListener{
+	
+	private EditDeleteSlotDialog dial;
+	
+	public DeleteChoosenSlot(EditDeleteSlotDialog edsd) {
+		this.dial = edsd;
+	}
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(dial.slot.getSelectedIndex()==-1){
+			JOptionPane.showMessageDialog(null, "There is no Slot to be deleted.");
+			return;
+		}
+		dial.getPage().getSlots().remove(dial.slot.getSelectedIndex());
+		dial.dispose();
+	}
+
+	
+	
+}

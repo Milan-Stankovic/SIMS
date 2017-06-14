@@ -1,0 +1,28 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import controller.GeRuDokController;
+import controller.command.CommandManager;
+import model.Project;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class CopyListener implements ActionListener{
+
+	private WorkspaceModel model;
+	private Tree tree;	
+	public CopyListener(WorkspaceModel m, Tree t){
+		this.model = m;
+		this.tree = t;
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		Object selected = tree.getSelected();
+		
+		GeRuDokController.getInstance().Copy(selected);
+	}
+
+}

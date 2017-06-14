@@ -1,0 +1,33 @@
+package controller.observerArg;
+
+import model.Project;
+import model.Workspace;
+
+public class RadniProstor_Arg { // PREIMENOVANO
+	
+		   private Project projekat; // NEMA POTREBE ZA LISTU
+		  
+		   private Workspace radniProstor;
+		   
+		   public Akcija akcijeRP; //IZBACEN JE JEDAN ATRIBUT
+		   
+		   public Workspace getRProstor() {
+		      // TODO: implement
+		      return radniProstor;
+		   }
+		   
+		   
+		   public Project getProjekat() { // NE TREBA VRACATI LISTU 
+		      
+		      return projekat;
+		   }
+		 
+		
+		   public RadniProstor_Arg(Project projekat, Workspace radniProstor, Akcija akcijaNadRP) { // NE PRIMA LISTU
+		      
+			  this.projekat= projekat;
+			  this.radniProstor=radniProstor;
+			  this.akcijeRP= akcijaNadRP;
+		   }
+	
+}

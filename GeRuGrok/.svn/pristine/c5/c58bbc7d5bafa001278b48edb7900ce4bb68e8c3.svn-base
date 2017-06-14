@@ -1,0 +1,37 @@
+package controller.observerArg;
+
+import model.GeRuDokument;
+import model.Project;
+
+public class Projekat_Arg {
+	
+	
+	 private GeRuDokument dokument; // POGRESAN PARAMETAR TREGA GERUDOKUMENT A NE DOKUMENT I TREBA SAMO 1
+	 
+	   private Project projekat; //IZBACEN PARAMETAR
+
+	   public Akcija akcijeProjekat;
+	   
+
+	   public Project getProjekat() { 
+	      // TODO: implement
+	      return projekat;
+	   }
+	   
+	
+	   public GeRuDokument getDokument() { // I GETER JE ONDA LOS
+	      // TODO: implement
+	      return dokument;
+	   }
+	   
+
+	   public Projekat_Arg(GeRuDokument dokument, Project projekat, Akcija akcijaNadProjektom) { // I KONSTRUKTOR
+		   
+		   this.dokument = dokument;
+		   this.projekat= projekat;
+		   this.akcijeProjekat=akcijaNadProjektom;
+		   
+	      // TODO: implement
+	   }
+
+}

@@ -1,0 +1,73 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFileChooser;
+
+import model.GeRuDokModel;
+import model.JsonModel;
+import model.Workspace;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class OpenWorkspaceListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public OpenWorkspaceListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree=t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		JFileChooser chooser = new JFileChooser();
+		//TODO treba dodati ekstenziju, puca program trenutno sa ovim filterom!
+		//FileFilter filter =new FileNameExtensionFilter("wsp");
+		
+		chooser.setAcceptAllFileFilterUsed(false);
+		//chooser.setFileFilter(filter);
+		int response=chooser.showOpenDialog(null);
+		if( response ==JFileChooser.APPROVE_OPTION){
+			String path=chooser.getSelectedFile().getAbsolutePath();
+			JsonModel jm = new JsonModel();
+			Workspace ws = jm.loadWorkspaceFromJSon(path);
+			GeRuDokModel.getInstance().setActiveWorkspace(ws);
+			//tree.setModel(new WorkspaceModel(ws));
+			
+			model.setRoot(ws);
+			
+			tree.show();
+		}
+		
+	
+		//TODO improt povezati ovdeeee	 jason treba odradti za ovo
+	}
+
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

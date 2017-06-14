@@ -1,0 +1,94 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JOptionPane;
+
+import dialogs.AddPageDialog;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Workspace;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class EditSelected implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public EditSelected(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree=t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(tree.getSelected()==null)
+			return;
+		if(tree.getSelected() instanceof Workspace){
+			String name = JOptionPane.showInputDialog(null, "Please enter NEW name for your Workspace: ");
+			if(name.trim().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Name can not be empty.");
+				return;
+			}
+			((Workspace)tree.getSelected()).setName(name);
+			model.reload();
+			return;
+		}
+		if(tree.getSelected() instanceof Project){
+			String name = JOptionPane.showInputDialog(null, "Please enter NEW name for your Project: ");
+			
+			if(name == null){
+				return;
+			}
+			
+			if(name.trim().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Name can not be empty.");
+				return;
+			}
+			((Project)tree.getSelected()).setName(name);
+			model.reload();
+			return;
+		}
+		if(tree.getSelected() instanceof GeRuDokument){
+			String name = JOptionPane.showInputDialog(null, "Please enter NEW name for your GeRuDocument: ");
+			if(name.trim().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Name can not be empty.");
+				return;
+			}
+			((GeRuDokument)tree.getSelected()).setName(name);
+			model.reload();
+			return;
+		}
+		if(tree.getSelected() instanceof Page){
+			AddPageDialog adp = new AddPageDialog(model, (Page)tree.getSelected());
+			adp.show();
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

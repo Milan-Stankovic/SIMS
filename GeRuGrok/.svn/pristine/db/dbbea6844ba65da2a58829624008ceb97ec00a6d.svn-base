@@ -1,0 +1,10 @@
+package controller.factory;
+
+public abstract class DocumentBuilding { // SVI KONSTRUKTORI U NAREDNIM KLASAMA SU LOSI
+	
+	protected String name;// GRESKA MORA BITI protected a ne private
+	
+	protected String path; // MORA BITI protected a ne private
+	
+	public abstract Object build(String path);
+}

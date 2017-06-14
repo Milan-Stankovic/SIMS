@@ -1,0 +1,276 @@
+package model;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Observer;
+import java.util.UUID;
+
+import javax.swing.tree.TreeNode;
+
+import controller.observerArg.Akcija;
+import controller.observerArg.Projekat_Arg;
+import controller.observerArg.Stranica_Arg;
+
+public class Page extends Document implements TreeNode {
+
+	private ArrayList<Slot> slots;
+	//private ArrayList<Owner> owners;
+	private double x;
+	private double y;
+	private double height;
+	private double width;
+	
+	public ArrayList<Slot> getSlots() {
+		return slots;
+	}
+	public void setSlots(ArrayList<Slot> slots) {// TREBAS LI NA OVO ?
+		this.slots = slots;
+		for (Slot item : this.slots) {
+			Stranica_Arg arg = new Stranica_Arg(item, this, Akcija.DODAJ);
+			setChanged();
+			notifyObservers(arg);
+		}
+	}
+	/*public ArrayList<Owner> getOwners() {
+		return owners;
+	}
+	public void setOwners(ArrayList<Owner> owners) { // STRANICA NEMA OWNERE PO SPECIFIKACIJI, ZAR NE ? 
+		this.owners = owners;
+		
+		for (Owner item : this.owners) {
+			Stranica_Arg arg = new Stranica_Arg(null, this, Akcija.DELI);
+			setChanged();
+			notifyObservers(arg);
+		}
+		
+	}*/
+	public double getX() {
+		return x;
+	}
+	public void setX(double x) {
+		this.x = x;
+	}
+	public double getY() {
+		return y;
+	}
+	public void setY(double y) {
+		this.y = y;
+	}
+	public double getHeight() {
+		return height;
+	}
+	public void setHeight(double height) {
+		this.height = height;
+	}
+	public double getWidth() {
+		return width;
+	}
+	public void setWidth(double width) {
+		this.width = width;
+	}
+	
+	
+	public void setDimensions(double width, double height, double x, double y){// DA NE BI IMALI 100 case-ova u update
+		setWidth(width);
+		setHeight(height);
+		setX(x);
+		setY(y);
+		Stranica_Arg arg = new Stranica_Arg(null, this, Akcija.PROMENI_DIMENZIJE);
+		setChanged();
+		notifyObservers(arg);
+		
+		
+	}
+	/*
+	public void addOwner(GeRuDokument owner, ShareTypes stype) {
+		if (owners.isEmpty()) {
+			Owner ownerToAdd = new Owner(owner, ShareTypes.OWNER);
+			owners.add(ownerToAdd);
+		}else{
+			Owner ownerToAdd = new Owner(owner, stype);
+			owners.add(ownerToAdd);
+		}
+	}
+	public void addOwner(GeRuDokument owner) {
+		if (owners.isEmpty()) {
+			Owner ownerToAdd = new Owner(owner, ShareTypes.OWNER);
+			owners.add(ownerToAdd);
+		}
+	}
+	public void removeOwner(GeRuDokument owner) {
+		int index = -1;
+		Owner temp;
+		for (int i = 0; i < owners.size(); i++) {
+			temp = owners.get(i);
+			if(temp.getHolder().getUniqueID()== owner.getUniqueID()){
+				index=i;
+				break;
+			}
+		}
+		if(index!=-1){
+			owners.remove(index);
+			if(owners.isEmpty())
+			{
+				owners.add(new Owner(GeRuDokModel.getInstance().getActiveWorkspace().getDefaultGeRuDokument(), ShareTypes.OWNER));
+			}else{
+				owners.get(0).setType(ShareTypes.OWNER);
+			}
+		}
+	}
+	*/
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+		Stranica_Arg arg = new Stranica_Arg(null, this, Akcija.PREIMENUJ);
+		setChanged();
+		notifyObservers(arg);
+	}
+	@Override
+	public String getPath() {
+		return super.getPath();
+	}
+	@Override
+	public void setPath(String path) {
+		super.setPath(path);
+		Stranica_Arg arg = new Stranica_Arg(null, this, Akcija.PROMENI_PATH);
+		setChanged();
+		notifyObservers(arg);
+	}
+	@Override
+	public UUID getUniqueID() {
+		return super.getUniqueID();
+	}
+
+	public Page(String name, String path, double width, double height, double x, double y, Observer obs) {
+		super.name = name;
+		super.path = path;
+		this.width=width;
+		this.height=height;
+		this.x=x;
+		this.y=y;
+		addObserver(obs);
+		super.uniqueID = UUID.randomUUID();
+		this.slots = new ArrayList<Slot>();
+	}
+	public Page(String name, String path, double width, double height, double x, double y,ArrayList<Slot> slots, UUID id, Observer obs) {
+		super.name = name;
+		super.path = path;
+		this.width=width;
+		this.height=height;
+		this.x=x;
+		this.y=y;
+		addObserver(obs);
+		super.uniqueID = id;
+		this.slots = slots;
+		//this.owners = owners;
+	}
+	public Page(){
+	}
+	@Override
+	public boolean deleteChild(UUID id) {
+		if (this.containsChild(id)) {
+			for (Slot slot : slots) {
+				if (slot.getUniqueID() == id) {
+					slots.remove(slot);
+					Stranica_Arg arg = new Stranica_Arg(slot, this, Akcija.OBRISI);
+					setChanged();
+					notifyObservers(arg);
+					return true;
+				}
+			}
+		} 
+		return false;
+	}
+	@Override
+	public boolean containsChild(UUID id) {
+		for (Slot slot : slots) {
+			if (slot.getUniqueID() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+	@Override
+	public Slot getChild(UUID id) {
+		for (Slot slot : slots) {
+			if (slot.getUniqueID() == id) {
+				return slot;
+			}
+		}
+		return null;
+	}
+	@Override
+	public boolean addChild(Object obj) {
+		boolean retVal = false;
+		Slot temp = null;
+		try {
+			temp = (Slot) obj;
+		} catch (Exception e) {
+			System.out.println("Failed to cast Object as Slot in Page.addChild()");
+		}
+		if (!this.containsChild(temp.getUniqueID())) {
+			slots.add(temp);
+			
+			Stranica_Arg arg = new Stranica_Arg(temp, this, Akcija.DODAJ);
+			setChanged();
+			notifyObservers(arg);
+			
+			retVal=true;
+		}
+		return retVal;
+	}
+	/*public ShareTypes getOwner(UUID uniqueID){
+		for(Owner own : owners){
+			if(own.getHolder().getUniqueID()==uniqueID){
+				return own.getType();
+			}
+		}
+		return null;
+	}*/
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Enumeration children() {
+		return (Enumeration<Slot>)slots;
+	}
+	@Override
+	public boolean getAllowsChildren() {
+		return true;
+	}
+	@Override
+	public TreeNode getChildAt(int childIndex) {
+		if(childIndex<slots.size() && childIndex>-1){
+			return (TreeNode)slots.get(childIndex);
+		}
+		return null;
+	}
+	@Override
+	public int getChildCount() {
+		return slots.size();
+	}
+	@Override
+	public int getIndex(TreeNode node) {
+		if(node instanceof Slot){
+			Slot s = (Slot) node;
+			for(int i=0; i<slots.size();i++)
+				if(s==slots.get(i))
+					return i;
+		}
+		return -1;
+	}
+	@Override
+	public TreeNode getParent() {
+		return null;
+	}
+	@Override
+	public boolean isLeaf() {
+		return true;
+	}
+	public String toString(){
+		return name;
+	}
+
+}

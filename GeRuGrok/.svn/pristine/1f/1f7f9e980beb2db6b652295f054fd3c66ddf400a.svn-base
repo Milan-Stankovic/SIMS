@@ -1,0 +1,148 @@
+package controller.command;
+
+import controller.GeRuDokController;
+import model.Clipboard;
+import model.ClipboardContentType;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Workspace;
+
+public class PasteCommand extends AbstractCommand  {
+
+	
+	private Object pastedObject;
+	private ClipboardContentType type;
+	
+	public PasteCommand(Object o) {
+		// TODO Auto-generated constructor stub
+		this.selectedObject=o;
+		pastedObject=null;
+		type=null;
+	}
+	
+	@Override
+	public boolean doCommand() {
+		// TODO Auto-generated method stub
+		
+		ClipboardContentType cct = Clipboard.getInstance().getType();
+		type=cct;
+		
+		Object obj = Clipboard.getInstance().getContent();
+		
+		switch (cct) {
+		case PROJECT:
+			if(this.selectedObject instanceof Workspace){
+				
+				Project p = (Project) obj;
+				Project proj = p.getClone();
+				pastedObject=proj;
+				AddProjectCommand apc = new AddProjectCommand(proj, (Workspace) this.selectedObject );
+				return apc.doCommand();
+				
+			}
+			
+			break;
+		case GERUDOKUMENT:
+			if(this.selectedObject instanceof Project){
+				
+				GeRuDokument grd = (GeRuDokument) obj;
+				GeRuDokument g = grd.getClone();
+				pastedObject=g;
+				AddDocumentCommand adc = new AddDocumentCommand((Project)this.selectedObject, g);
+				return adc.doCommand();
+			}
+			
+			break;
+		case PAGE:
+			if(this.selectedObject instanceof GeRuDokument){
+				
+				Page pag = (Page) obj;
+				Page p = pag.getClone();
+				pastedObject=p;
+				AddPageCommand apc = new AddPageCommand((GeRuDokument)this.selectedObject, p);
+				return apc.doCommand();
+				
+			}
+			
+			break;
+		case SLOT: // Ne moze ga izabrati 
+			
+			
+			break;
+		case EMPTY:
+			
+			break;
+			
+		default:
+			break;
+		}
+		
+		
+		return false;
+	}
+
+	@Override
+	public boolean undoCommand() {
+		if(pastedObject != null){
+			
+			switch (type) {
+			case PROJECT:
+				if(this.selectedObject instanceof Workspace){
+					
+					Project p = (Project) pastedObject;
+					GeRuDokController.getInstance().Copy(p);
+					
+					
+					AddProjectCommand apc = new AddProjectCommand(p, (Workspace) this.selectedObject );
+					return apc.undoCommand();
+					
+				}
+				
+				break;
+			case GERUDOKUMENT:
+				if(this.selectedObject instanceof Project){
+					
+					GeRuDokument grd = (GeRuDokument) pastedObject;
+					GeRuDokController.getInstance().Copy(grd);
+					AddDocumentCommand adc = new AddDocumentCommand((Project)this.selectedObject, grd);
+					return adc.undoCommand();
+				}
+				
+				break;
+			case PAGE:
+				if(this.selectedObject instanceof GeRuDokument){
+					
+					Page pag = (Page) pastedObject;
+					GeRuDokController.getInstance().Copy(pag);
+					AddPageCommand apc = new AddPageCommand((GeRuDokument)this.selectedObject, pag);
+					return apc.undoCommand();
+					
+				}
+				
+				break;
+			case SLOT: // Ne moze ga izabrati 
+				
+				
+				break;
+			case EMPTY:
+				
+				break;
+				
+			default:
+				break;
+			}
+			
+			
+			return false;
+			
+			
+			
+			
+		}
+			
+			
+		return false;
+	}
+
+}

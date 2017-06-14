@@ -1,0 +1,67 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JOptionPane;
+import controller.command.AddDocumentCommand;
+import controller.command.CommandManager;
+import dialogs.AddPageDialog;
+import model.GeRuDokModel;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class AddGeRuDokumentListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public AddGeRuDokumentListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree = t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Object selected = tree.getSelected();
+		if(selected instanceof Project){
+		//	((Project)selected).getGerudokuments().add(new GeRuDokument("New GeRuDokument"));
+			CommandManager cmd = CommandManager.getCMD();
+			String name = JOptionPane.showInputDialog(null, "Please enter a name for your GeRuDocument: ");
+			//provera svih da li su istog imena
+		
+		
+			
+			cmd.addAbstractCommand(new AddDocumentCommand((Project)selected, new GeRuDokument(name, "", tree) ));
+		}
+		model.reload();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

@@ -1,0 +1,136 @@
+package view;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+import listenersTree.AddGeRuDokumentListener;
+import listenersTree.AddPageListener;
+import listenersTree.AddProjectListener;
+import listenersTree.AddSlotListener;
+import listenersTree.DeleteMouseListener;
+import listenersTree.EditSelected;
+import listenersTree.PropertiesMouseListener;
+import listenersTree.ShareListener;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Workspace;
+import model.WorkspaceModel;
+
+@SuppressWarnings("serial")
+public class TreePopupMenu extends JPopupMenu{
+	private JMenu mi0;
+	private JMenuItem mi00;
+	private JMenuItem mi01;
+	private JMenuItem mi02;
+	private JMenuItem mi03;
+	private JMenuItem mi1;
+	private JMenuItem mi2;
+	private JMenuItem mi3;
+	private JMenuItem mi5;
+	private JMenuItem mi6;
+	private JMenuItem mi7;
+	private JMenuItem mi8;	
+	private JMenuItem mi9;	
+	private JMenuItem mi12;	
+	private JMenuItem mi10;	
+	private JMenu mi11;
+	private JMenuItem mi110;
+	private JMenuItem mi111;
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public TreePopupMenu(WorkspaceModel m, Tree t){
+		this.model = m;
+		this.tree=t;
+		mi0 = new JMenu("Add");
+		mi00 = new JMenuItem("Project"); 
+		mi00.addMouseListener(new AddProjectListener(model, tree));
+		mi01 = new JMenuItem("GeRuDocument");
+		mi01.addMouseListener(new AddGeRuDokumentListener(model, tree));
+		mi02 = new JMenuItem("Page");
+		mi02.addMouseListener(new AddPageListener(model, tree));
+		mi03 = new JMenuItem("Slot");
+		mi03.addMouseListener(new AddSlotListener(model, tree));
+		
+		mi5 = new JMenuItem("Open");
+		mi6 = new JMenuItem("Close");
+		mi7 = new JMenuItem("Cut");
+		mi8 = new JMenuItem("Copy");
+		mi9 = new JMenuItem("Paste");
+		mi1 = new JMenuItem("Edit");
+		mi1.addMouseListener(new EditSelected(model, tree));
+		mi2 = new JMenuItem("Delete");
+		mi2.addMouseListener(new DeleteMouseListener(model, tree));
+		mi3 = new JMenuItem("Share");
+		mi3.addMouseListener(new ShareListener(model, tree));
+		mi10=new JMenuItem("Properties");
+		mi10.addMouseListener(new PropertiesMouseListener(tree));
+		mi12=new JMenuItem("Exit");
+		
+	//	setPreferredSize(new Dimension(110, 230));
+		
+		if(tree.getSelected() instanceof Workspace){
+			mi01.setEnabled(false);
+			mi02.setEnabled(false);
+			mi03.setEnabled(false);
+			mi7.setEnabled(false);
+			mi8.setEnabled(false);
+			mi9.setEnabled(false);
+			mi3.setEnabled(false);
+		}
+		else if(tree.getSelected() instanceof Project){
+			mi00.setEnabled(false);
+			mi02.setEnabled(false);
+			mi03.setEnabled(false);
+		}
+		else if(tree.getSelected() instanceof GeRuDokument){
+			mi00.setEnabled(false);
+			mi01.setEnabled(false);
+			mi03.setEnabled(false);
+		}
+		else{
+			mi00.setEnabled(false);
+			mi01.setEnabled(false);
+			mi02.setEnabled(false);
+		}
+		
+		
+		mi0.add(mi00); mi0.add(mi01);
+		mi0.add(mi02); mi0.add(mi03);
+		add(mi0);
+		addSeparator();
+		if(tree.getSelected() instanceof Page){
+			mi11 = new JMenu("Move");
+			mi110 = new JMenuItem("Up");
+			mi111 = new JMenuItem("Down");
+			mi11.add(mi110);mi11.add(mi111);
+			add(mi11);
+			addSeparator();
+		}
+		add(mi5);
+		add(mi6);
+		addSeparator();
+		add(mi7);
+		add(mi8);
+		add(mi9);
+		addSeparator();
+		add(mi1);
+		add(mi2);
+		add(mi3);
+		addSeparator();
+		add(mi10);
+		addSeparator();
+		add(mi12);
+	}
+
+	public WorkspaceModel getModel() {
+		return model;
+	}
+
+	public void setModel(WorkspaceModel model) {
+		this.model = model;
+	}
+}

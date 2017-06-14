@@ -1,0 +1,31 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class OpenListener implements ActionListener{
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JFileChooser chooser = new JFileChooser();
+		FileFilter filter =new FileNameExtensionFilter("proj", "PROJ");
+		
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.setFileFilter(filter);
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		chooser.setAcceptAllFileFilterUsed(false);
+		int response=chooser.showOpenDialog(null);
+		if( response ==JFileChooser.APPROVE_OPTION){
+			String path = chooser.getSelectedFile().getAbsolutePath();
+			//TODO dodavanje projekta u tree, ne znam zbog observera kako ide
+		}
+		return;
+	}
+
+}

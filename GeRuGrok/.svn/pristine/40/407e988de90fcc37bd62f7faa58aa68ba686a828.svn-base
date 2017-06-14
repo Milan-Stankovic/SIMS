@@ -1,0 +1,33 @@
+package model;
+
+public class Owner {
+
+	private Document holder;
+	private ShareTypes type;
+
+	public void setType(ShareTypes type) {
+		this.type = type;
+	}
+	public void setHolder(Document holder){
+		this.holder=holder;
+	}
+	public Document getHolder() {
+		return holder;
+	}
+
+	public ShareTypes getType() {
+		return type;
+	}
+
+	public Owner(Document holder, ShareTypes type) {
+		this.holder = holder;
+		this.type = type;
+	}
+	public Owner(){
+	}
+	public String toString(){
+		return holder.name;
+	}
+	
+
+}

@@ -1,0 +1,65 @@
+package controller;
+
+import model.Document;
+import model.GeRuDokModel;
+import model.GeRuDokument;
+import model.Owner;
+import model.Project;
+import model.ShareTypes;
+
+public class GeRuDokController {
+	
+	private static GeRuDokController controll = null; 
+	
+	public GeRuDokController() {
+		// TODO Auto-generated constructor stub
+	}
+	public static GeRuDokController getInstance(){ // DODATI U DIAGRAM
+		if (controll == null){
+			controll = new GeRuDokController();
+		}
+		
+		return controll;
+	}
+
+	private static void deleteInstance() { // DODATI U DIAGRAM
+		controll = null;
+	}
+	
+	
+	
+	public boolean isReadOnly(Document d){ // vraca true ako je u ovom workspace-u read only ili false ako nije 
+		
+		if(d instanceof Project){
+			Project p =(Project) d;
+			for(Owner o : p.getOwners()){
+				if(o.getType() == ShareTypes.READ){
+					if(o.getHolder().getUniqueID() == GeRuDokModel.getInstance().getActiveWorkspace().getUniqueID()){
+						return true;
+					}
+				}
+			}
+		}else if(d instanceof GeRuDokument){
+			GeRuDokument grd = (GeRuDokument)d;
+			for(Owner o : grd.getOwners()){
+				if(o.getType() == ShareTypes.READ){
+					
+					for( Project p1 : GeRuDokModel.getInstance().getActiveWorkspace().getProjects()){
+						if(o.getHolder().getUniqueID()== p1.getUniqueID()){
+							return true;
+						}
+					}
+					
+				}
+				
+			}
+			
+		}else{
+			System.out.println("Poslato je nesto sto nije Projekat ili Gerudokument");
+		}
+		
+		return false;
+	}
+	
+
+}

@@ -1,0 +1,27 @@
+package controller.command;
+
+public class PasteCommand extends AbstractCommand  {
+
+	public PasteCommand(Object o) {
+		// TODO Auto-generated constructor stub
+		this.selectedObject=o;
+		
+	}
+	
+	@Override
+	public boolean doCommand() {
+		// TODO Auto-generated method stub
+		
+		
+		
+		
+		return false;
+	}
+
+	@Override
+	public boolean undoCommand() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

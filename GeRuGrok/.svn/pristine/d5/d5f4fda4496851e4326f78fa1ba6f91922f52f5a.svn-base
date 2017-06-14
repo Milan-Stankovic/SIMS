@@ -1,0 +1,320 @@
+package model;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class JsonModel {
+	
+	private Boolean uspesno;
+	
+	public JsonModel() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public Boolean isSharedProject(Project p){ // Da li se projekat trenutno nalazi u workspace-u gde je sharovan
+		ArrayList<Owner> owners = p.getOwners();
+		
+		if(owners.size() > 1){
+			
+			for(Owner o : owners){
+				
+				if(o.getType() == ShareTypes.OWNER){
+					Workspace w = (Workspace) o.getHolder();
+					if(w.getUniqueID() != GeRuDokModel.getInstance().getActiveWorkspace().getUniqueID()){
+						return true;
+					}
+				}
+				
+			}
+			
+		}
+	
+		return false;
+	}
+	
+	
+	public Boolean isSharedGeRuDokument(GeRuDokument g, Project p){
+		
+		ArrayList<Owner> owners = p.getOwners();
+		
+		if(owners.size() > 1){
+			
+			for(Owner o : owners){
+				
+				if(o.getType() == ShareTypes.OWNER){
+					Project w = (Project) o.getHolder();
+					if(w.getUniqueID() != p.getUniqueID()){
+						
+						return true;
+					}
+				}
+						
+				
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	public void saveExistingModel(Workspace workspace){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		File f= null;
+		File copy= null;
+		
+		try{
+    		f = new File(workspace.getPath());// ode sve
+    		copy = new File(workspace.getPath()+"copy");
+    		copyFile(f, copy);
+    		f.delete();
+    	}catch(Exception e){
+    	}
+		try {
+			
+			
+			mapper.writeValue(new File(workspace.getPath()), workspace);
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong during share. Changes are not saved."); //ako ovo ne uspe razjebao sam tudji workspace
+			
+			if(copy !=null && f !=null){// zato sam ubacio copy :D Valjda ga ovo nece unistiti :D 
+				try {
+					copyFile(copy, f);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			return;
+		}
+		
+
+		
+	}
+	
+	
+	private void copyFile(File source, File dest) throws IOException {
+	    InputStream is = null;
+	    OutputStream os = null;
+	    try {
+	        is = new FileInputStream(source);
+	        os = new FileOutputStream(dest);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+	    } finally {
+	        is.close();
+	        os.close();
+	    }
+	}
+	
+	public void saveModel(Workspace workspace){		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		uspesno = true;
+		
+		String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+		
+		
+		if(path == null){
+			
+			path= (System.getProperty("user.dir")+"/src/model/"+workspace.getName()+workspace.getUniqueID()+".work");
+		}else
+			path= path+"/"+workspace.getName()+workspace.getUniqueID()+".work";
+		
+		try{
+    		File file = new File(path);
+    		file.delete();
+    	}catch(Exception e){
+    	}
+		try {
+			
+			workspace.setPath(path);
+		
+			mapper.writeValue(new File(path), workspace);
+			
+			
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+			uspesno = false;
+			return;
+		}
+		
+		saveProjects(workspace);
+		
+		if(uspesno)
+		JOptionPane.showMessageDialog(null, "Saved");
+	}
+	
+	public void saveProjects(Workspace workspace){
+		
+		
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		if(!(workspace.getProjects() != null)){
+			
+			return;
+		}
+		
+		for(Project p : workspace.getProjects() ){
+			String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+			if(path == null){
+				
+				path= (System.getProperty("user.dir")+"/src/model/"+p.getName() + p.getUniqueID() +".proj");
+			}else
+				path= path+"/"+p.getName()+p.getUniqueID()+".proj";
+			
+			try{
+	    		File file = new File(path);
+	    		file.delete();
+	    	}catch(Exception e){
+	    	}
+			try {
+				
+				if(!isSharedProject(p)){
+						p.setPath(path);
+						mapper.writeValue(new File(path), p);
+					
+					}else
+						mapper.writeValue(new File(p.getPath()), p);
+						
+				saveGeRuDokuments(p);
+				
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+				uspesno = false;
+				return;
+			}
+			//JOptionPane.showMessageDialog(null, "Saved");
+		}
+		
+	}
+	
+	
+	public void saveGeRuDokuments(Project p){
+		
+		
+		//String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		if(!(p.getGerudokuments() != null)){
+			
+			return;
+		}
+		
+		for(GeRuDokument g : p.getGerudokuments() ){
+			String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+			if(path == null){
+				
+				path= (System.getProperty("user.dir")+"/src/model/"+g.getName() + g.getUniqueID() +".gerudok");
+			}else
+				path= path+"/"+g.getName()+g.getUniqueID()+".gerudok";
+			
+			try{
+	    		File file = new File(path);
+	    		file.delete();
+	    	}catch(Exception e){
+	    	}
+			try {
+				if(!isSharedGeRuDokument(g, p)){
+					g.setPath(path);
+					mapper.writeValue(new File(path), g);
+				}else
+					mapper.writeValue(new File(g.getPath()), g);
+				
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+				uspesno = false;
+				return;
+			}
+		}
+		
+	}
+	
+	
+	
+	public Workspace loadWorkspaceFromJSon(String path){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.WRAP_EXCEPTIONS, true);
+		Workspace ws = null;
+		try {
+			
+			//path= path.replaceAll("\\", "/");
+			path= path.replace('\\', '/');
+		//	String myLoc= (System.getProperty("user.dir")+"/src/model/"+"ddd.json");
+			ws = mapper.readValue(new File(path), Workspace.class);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong. Please restart application");
+			ws=null;
+			
+		}
+		return ws;
+	}
+	
+	
+	public Project loadProjectFromJSon(String path){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.WRAP_EXCEPTIONS, true);
+		Project proj = null;
+		try {
+			
+			//path= path.replaceAll("\\", "/");
+			path= path.replace('\\', '/');
+		//	String myLoc= (System.getProperty("user.dir")+"/src/model/"+"ddd.json");
+			proj = mapper.readValue(new File(path), Project.class);
+			
+			
+			
+			
+		} catch (IOException e) {
+			//JOptionPane.showMessageDialog(null, "Something went wrong. Please restart application");
+			System.out.println("Neka greska kod loada projekta ali to je ok :D");
+			proj=null;
+			
+		}
+		return proj;
+		
+	}
+	
+	
+	
+	public void ShareProject(String workPath, Project p, ShareTypes s){
+		
+		
+		
+		Workspace ws=loadWorkspaceFromJSon(workPath);
+		p.addOwner(ws, s);
+		if(p.getPath().equals("")){
+			String path= (GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder()+ "/"+ p.getName() + p.getUniqueID() +".proj");
+			p.setPath(path);
+			}
+		ws.getProjects().add(p);
+		ws.getProjectPaths().add(p.path);
+		saveExistingModel(ws);
+		
+	}
+	
+
+}

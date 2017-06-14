@@ -1,0 +1,30 @@
+package controller.command;
+
+import model.Project;
+import model.Workspace;
+
+public class AddProjectCommand extends AbstractCommand {
+
+	private Workspace parent;
+
+	private Project child;
+
+	public boolean doCommand() {
+		// TODO: implement
+		return parent.addChild(child);
+	}
+
+	public boolean undoCommand() {
+		// TODO: implement
+		return parent.deleteChild(child.getUniqueID());
+	}
+
+	public AddProjectCommand(Project child, Workspace parent) {
+		// TODO: implement
+		this.child=child;
+		this.parent=parent;
+		this.selectedObject=child;
+	
+	}
+
+}

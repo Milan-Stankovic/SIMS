@@ -1,0 +1,46 @@
+package login;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import model.Users;
+
+public class AdminLogOutListener  implements MouseListener {
+	
+	public AdminLogOutListener() {
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Users u = AdminFrame.getInstance().getUsers();
+		UsersJson json = new UsersJson();
+		json.saveUsersToJSon(u);
+		AdminFrame.getInstance().dispose();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}
+

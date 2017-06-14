@@ -1,0 +1,150 @@
+package model;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class JsonModel {
+	
+	
+	public JsonModel() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void saveModel(Workspace workspace){		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+		
+		
+		if(path == null){
+			
+			path= (System.getProperty("user.dir")+"/src/model/"+workspace.getName()+workspace.getUniqueID()+".json");
+		}else
+			path= path+"/"+workspace.getName()+workspace.getUniqueID()+".json";
+		
+		try{
+    		File file = new File(path);
+    		file.delete();
+    	}catch(Exception e){
+    	}
+		try {
+			mapper.writeValue(new File(path), workspace);
+			workspace.setPath(path);
+			
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+			return;
+		}
+		
+		saveProjects(workspace);
+		
+		
+		JOptionPane.showMessageDialog(null, "Saved");
+	}
+	
+	public void saveProjects(Workspace workspace){
+		
+		
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		if(!(workspace.getProjects() != null)){
+			
+			return;
+		}
+		
+		for(Project p : workspace.getProjects() ){
+			String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+			if(path == null){
+				
+				path= (System.getProperty("user.dir")+"/src/model/"+p.getName() + p.getUniqueID() +".json");
+			}else
+				path= path+"/"+p.getName()+p.getUniqueID()+".json";
+			
+			try{
+	    		File file = new File(path);
+	    		file.delete();
+	    	}catch(Exception e){
+	    	}
+			try {
+				mapper.writeValue(new File(path), p);
+				p.setPath(path);
+				saveGeRuDokuments(p);
+				
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+				return;
+			}
+			//JOptionPane.showMessageDialog(null, "Saved");
+		}
+		
+	}
+	
+	
+	public void saveGeRuDokuments(Project p){
+		
+		
+		//String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		if(!(p.getGerudokuments() != null)){
+			
+			return;
+		}
+		
+		for(GeRuDokument g : p.getGerudokuments() ){
+			String path = GeRuDokModel.getInstance().getCurrentUser().getPathToUsersFolder();
+			if(path == null){
+				
+				path= (System.getProperty("user.dir")+"/src/model/"+g.getName() + g.getUniqueID() +".json");
+			}else
+				path= path+"/"+g.getName()+g.getUniqueID()+".json";
+			
+			try{
+	    		File file = new File(path);
+	    		file.delete();
+	    	}catch(Exception e){
+	    	}
+			try {
+				mapper.writeValue(new File(path), g);
+				g.setPath(path);
+				
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Something went wrong. Changes are not saved.");
+				return;
+			}
+		}
+		
+	}
+	
+	
+	
+	public Workspace loadWorkspaceFromJSon(String path){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.WRAP_EXCEPTIONS, true);
+		Workspace ws = new Workspace();
+		try {
+			
+			//path= path.replaceAll("\\", "/");
+			path= path.replace('\\', '/');
+		//	String myLoc= (System.getProperty("user.dir")+"/src/model/"+"ddd.json");
+			ws = mapper.readValue(new File(path), Workspace.class);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Something went wrong. Please restart application");
+			
+		}
+		return ws;
+	}
+	
+
+}

@@ -1,0 +1,28 @@
+package controller.factory;
+
+import java.util.ArrayList;
+import java.util.Observer;
+
+import model.Project;
+
+public class ProjectFactory extends DocumentBuilding {
+	
+	
+	private Observer observer; // NEMA OVO U CLASS
+	
+	public ProjectFactory(String name, String path, Observer obs) {
+		this.name= name;
+		this.path= path;
+		this.observer=obs;
+		
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public Object build(String path) {
+		// TODO Auto-generated method stub
+		
+		
+		return new Project(name, path, observer);
+	}
+
+}

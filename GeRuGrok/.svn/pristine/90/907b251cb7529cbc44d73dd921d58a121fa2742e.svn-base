@@ -1,0 +1,25 @@
+package model;
+
+
+
+public class ElementHandler implements IElementHandler {
+
+	@Override
+	public void draw() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,73 @@
+package dialogs;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+
+import controller.command.AddSlotCommand;
+import controller.command.CommandManager;
+import model.Page;
+import model.Slot;
+
+public class EditSlotDialogListener implements MouseListener {
+	private AddSlotDialog dial; 
+	private Page page; 
+	private int ind; 
+	
+	public EditSlotDialogListener(AddSlotDialog asd, Page p, int i) {
+		this.dial = asd;
+		this.page = p;
+		this.ind = i;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		double height = 0;
+		double width = 0;
+		try{
+			height = Double.parseDouble(dial.tfHeight.getText());
+			width = Double.parseDouble(dial.tfWidth.getText());
+			} catch(Exception exception ){
+				JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+				return;	
+			}
+			if( width<1 || height<1){
+				JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+				return;	
+			}
+			if( page.getWidth() < width || page.getHeight() < height){
+				JOptionPane.showMessageDialog(null,"Width or Height is too big.");
+				return;	
+			}
+			page.getSlots().get(ind).setHeight(height);
+			page.getSlots().get(ind).setWidth(width);
+			//page.getSlots().add(slot);
+			dial.dispose();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

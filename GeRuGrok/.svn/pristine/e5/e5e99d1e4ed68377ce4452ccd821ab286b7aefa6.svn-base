@@ -1,0 +1,63 @@
+package dialogs;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+
+public class OpenFileBrowserListener implements MouseListener {
+
+	private static String path;
+	private JTextField tfName;
+	public OpenFileBrowserListener(JTextField tfName){
+		path="";
+		this.tfName=tfName;
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		JFileChooser chooser = new JFileChooser();
+		
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		chooser.setAcceptAllFileFilterUsed(false);
+		int response=chooser.showOpenDialog(null);
+		if( response ==JFileChooser.APPROVE_OPTION){
+			setPath(chooser.getSelectedFile().getAbsolutePath());
+			tfName.setText(path);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	
+}

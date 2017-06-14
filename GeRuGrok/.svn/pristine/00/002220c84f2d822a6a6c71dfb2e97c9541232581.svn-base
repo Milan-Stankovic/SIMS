@@ -1,0 +1,29 @@
+package controller;
+
+import java.util.ArrayList;
+
+import controller.command.AbstractCommand;
+import controller.command.CommandManager;
+
+public class GeRuDokController {
+	
+	private static GeRuDokController controll = null; 
+	
+	public GeRuDokController() {
+		// TODO Auto-generated constructor stub
+	}
+	public static GeRuDokController getInstance(){ // DODATI U DIAGRAM
+		if (controll == null){
+			controll = new GeRuDokController();
+		}
+		
+		return controll;
+	}
+
+	private static void deleteInstance() { // DODATI U DIAGRAM
+		controll = null;
+	}
+	
+	
+
+}

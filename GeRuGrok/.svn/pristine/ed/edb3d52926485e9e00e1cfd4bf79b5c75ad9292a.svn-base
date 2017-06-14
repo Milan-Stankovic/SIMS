@@ -1,0 +1,37 @@
+package controller.observerArg;
+
+import java.util.ArrayList;
+
+import model.GeRuDokument;
+import model.Page;
+
+public class GeRuDokument_Arg { //NAZIV
+	
+	private Page stranica; // SAMO 1 nije lista
+
+	   private GeRuDokument grdokument;
+	 
+
+	   public Akcija akcijeGRD; //VISKA ATRIBUT 
+	   
+	
+	   public Page getStranica() {
+	      // TODO: implement
+	      return stranica;
+	   }
+	   
+	
+	   public GeRuDokument getGRDokument() {
+	      // TODO: implement
+	      return grdokument;
+	   }
+	   
+
+	   public GeRuDokument_Arg(Page stranica, GeRuDokument grdokument, Akcija akcijaNadGRD) {
+	      // TODO: implement
+		   this.stranica=stranica;
+		   this.grdokument=grdokument;
+		   this.akcijeGRD=akcijaNadGRD;
+	   }
+
+}

@@ -1,0 +1,33 @@
+package controller.factory;
+
+import java.util.ArrayList;
+import java.util.Observer;
+
+import model.Page;
+
+public class PageFactory extends DocumentBuilding {
+	
+	private Observer observer; // NEMA U CLASS
+	private double width; // NEMA U CLASS
+	private double height; // NEMA U CLASS
+	private double x; // NEMA U CLASS
+	private double y; // NEMA U CLASS
+	
+	
+	public PageFactory(String name, String path, Observer obs, double width, double height, double x, double y) {
+		// TODO Auto-generated constructor stub
+		this.name=name;
+		this.path=path;
+		this.width=width;
+		this.height = height;
+		this.x=x;
+		this.y=y;
+		this.observer=obs;
+	}
+	@Override
+	public Object build(String path) {
+		// TODO Auto-generated method stub
+		return new Page(name, path, width, height, x, y, observer );
+	}
+
+}

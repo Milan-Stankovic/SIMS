@@ -1,0 +1,66 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.UUID;
+
+import com.sun.xml.internal.txw2.Document;
+
+import controller.command.AddPageCommand;
+import controller.command.AddProjectCommand;
+import controller.command.CommandManager;
+import dialogs.AddPageDialog;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Slot;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class AddPageListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public AddPageListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree = t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Object selected = tree.getSelected();
+		if(selected instanceof GeRuDokument){
+			
+			//Mozda bi bilo bolje da se su se samo vratila 3 parametra umesto komplikacije sa svim ovim ali ok :D Dodao sam command u onom drugom listeneru :D 
+			AddPageDialog apd = new AddPageDialog((GeRuDokument)selected, model);
+			apd.setVisible(true);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

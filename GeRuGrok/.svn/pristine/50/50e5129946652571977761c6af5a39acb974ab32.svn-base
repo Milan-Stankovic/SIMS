@@ -1,0 +1,73 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JOptionPane;
+
+import controller.command.AddProjectCommand;
+import controller.command.CommandManager;
+import model.Project;
+import model.Workspace;
+import model.WorkspaceModel;
+import view.Tree;
+
+@SuppressWarnings("serial")
+public class AddProjectListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public AddProjectListener(WorkspaceModel model, Tree t) {
+		this.model = model;
+		this.tree=t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Object root =(Object) model.getRoot();
+		if(root instanceof Workspace){
+			Workspace wsp = (Workspace) root;
+			if(!tree.isShowing()){
+				JOptionPane.showMessageDialog(null, "There is no Workspace. It should be opened first.");
+				return;
+			}
+			String name = JOptionPane.showInputDialog(null, "Please enter a name for your Project: ");
+			if(name.trim().isEmpty()){
+				return;
+			}
+			
+			CommandManager cmd = CommandManager.getCMD();
+			
+			cmd.addAbstractCommand(new AddProjectCommand( new Project(name,"",tree), wsp ));
+			
+			//wsp.getProjects().add(new Project(name));
+		}
+		model.reload();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

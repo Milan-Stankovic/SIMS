@@ -1,0 +1,22 @@
+package listeners;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import view.MainWindow;
+import view.WorkArea;
+
+public class FullscreenListener implements ActionListener{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		MainWindow mw = MainWindow.getInstance();
+		mw.getScrollPane().setVisible(false);
+		mw.getToolBar().setVisible(false);
+		MainWindow.getInstance().tabbedPane.setVisible(true);
+	}
+
+}

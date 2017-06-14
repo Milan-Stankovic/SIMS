@@ -1,0 +1,64 @@
+package listenersTree;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultTreeModel;
+
+import dialogs.AddPageDialog;
+import model.Page;
+import model.Project;
+import model.Workspace;
+
+public class SaveEditedPageListener implements ActionListener {
+	private String name;
+	private double width;
+	private double height;	
+	private AddPageDialog apd;
+	private Page page;
+	private DefaultTreeModel model;
+	
+	public SaveEditedPageListener(AddPageDialog apd, DefaultTreeModel model, Page p) {
+		this.apd = apd;
+		this.model= model;
+		this.page = p;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(apd.tfName.getText().trim().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Name can not be empty");
+			return;
+		}
+		try{
+		height = Double.parseDouble(apd.tfHeight.getText());
+		width = Double.parseDouble(apd.tfWidth.getText());
+		} catch(Exception exception ){
+			JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+			return;	
+		}
+		if( width<1 || height<1){
+			JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+			return;	
+		}
+		page.setName(apd.tfName.getText().trim());
+		page.setHeight(height);
+		page.setWidth(width);
+		
+		Workspace root = (Workspace) model.getRoot();
+		//kako da dobijem path od page-a sa kojim trenutno radim?
+		//treba mi zapravo gerudokument u kojem se taj page nalazi da mogu da pozovem svoju funkciju za prikaz stranica i slotova
+		
+		model.reload();
+		apd.dispose();
+	}
+
+	
+	
+}
+

@@ -1,0 +1,52 @@
+package view;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import listeners.CopyListener;
+import listeners.CutListener;
+import listeners.OpenListener;
+import listeners.PasteListener;
+import listeners.RedoListener;
+import listeners.SaveListener;
+import listeners.ToolsListener;
+import listeners.UndoListener;
+import listenersTree.AddProjectListener;
+import listenersTree.DeleteMouseListener;
+import model.WorkspaceModel;
+
+public class Tool extends JButton{
+	private String name;
+	private String pathToIcon;
+	private Tree tree;
+	private WorkspaceModel model;
+	public Tool(String name, String pathToIcon, Tree t, WorkspaceModel m){
+		this.name = name;
+		this.pathToIcon = pathToIcon;
+		this.model = m;
+		this.tree = t;
+		//setText(name);
+		setToolTipText(name);
+		setIcon(new ImageIcon(pathToIcon));
+		if(name.equals("New Project"))
+			addMouseListener(new AddProjectListener(model, tree));
+		else if(name.equals("Undo"))
+			addMouseListener(new UndoListener(model, tree));
+		else if(name.equals("Redo"))
+			addMouseListener(new RedoListener(model, tree));
+		else if(name.equals("Cut"))
+			addActionListener(new CutListener(model, tree));// Sto su to action a ostalo mouse ? 
+		else if(name.equals("Copy"))
+			addActionListener(new CopyListener(model, tree));
+		else if(name.equals("Paste"))
+			addActionListener(new PasteListener(model, tree));
+		else if(name.equals("Delete"))
+			addMouseListener(new DeleteMouseListener(model, tree));
+		else if(name.equals("Save"))
+			addMouseListener(new SaveListener());
+		else if(name.equals("Open"))
+			addActionListener(new OpenListener());
+		else
+			addActionListener(new ToolsListener(tree, model));
+	}
+}

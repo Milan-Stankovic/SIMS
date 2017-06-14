@@ -1,0 +1,35 @@
+package controller.observerArg;
+
+import model.Page;
+import model.Slot;
+
+public class Stranica_Arg { // PROMENITI NAZIV
+	
+	
+	 private Slot slot;
+	
+	   private Page stranica; // VISKA JEDAN PARAMETAR
+
+	   public Akcija akcijeStranica;
+	   
+
+	   public Slot getSlot() {
+	      // TODO: implement
+	      return slot;
+	   }
+
+	   public Page getStranica() {
+	      // TODO: implement
+	      return stranica;
+	   }
+
+	   public Stranica_Arg(Slot slot, Page stranica, Akcija akcijaNadSTR) {
+		   
+		   this.slot=slot;
+		   this.stranica=stranica;
+		   this.akcijeStranica=akcijaNadSTR;
+		   
+	      // TODO: implement
+	   }
+
+}

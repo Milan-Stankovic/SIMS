@@ -1,0 +1,23 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import view.MainWindow;
+import view.WorkArea;
+
+public class ExitFullscreenListener implements ActionListener{
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		if(WorkArea.getInstance().getTabCount()>0 && WorkArea.getInstance().getTitleAt(0).equals("orengvoiseur823ru"))
+			
+			WorkArea.getInstance().removeTabAt(0);		
+		MainWindow mw = MainWindow.getInstance();
+		mw.getScrollPane().setVisible(true);
+		mw.getToolBar().setVisible(true);
+		MainWindow.getInstance().tabbedPane.setVisible(true);
+	}
+
+}

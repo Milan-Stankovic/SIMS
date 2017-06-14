@@ -1,0 +1,69 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import dialogs.ShareGeRuDokumentDialog;
+import dialogs.ShareProjectDialog;
+import model.GeRuDokument;
+import model.Project;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class ShareListener implements MouseListener {
+	private String name;
+	private double width;
+	private double height;	
+	private Tree tree;
+	private WorkspaceModel model;
+	
+	public ShareListener(WorkspaceModel model, Tree t) {
+		this.tree = t;
+		this.model= model;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(tree.getSelected() == null){
+			return;
+		}
+		if(tree.getSelected() instanceof Project){
+			ShareProjectDialog swd = new ShareProjectDialog((Project)tree.getSelected());
+			swd.show();
+			return;
+		}
+		if(tree.getSelected() instanceof GeRuDokument){
+			ShareGeRuDokumentDialog swd = new ShareGeRuDokumentDialog((GeRuDokument)tree.getSelected(), tree);
+			swd.show();
+			return;
+		}
+		return;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}
+

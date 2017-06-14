@@ -1,0 +1,11 @@
+package controller.observerArg;
+
+public enum Akcija { // OVO JE JEDINI ENUM KOJI NAM JE POTREBAN
+		   DODAJ,
+		   OBRISI,
+		   DELI,
+		   PROMENI_PATH,
+		   DODAJ_DEFAULT,
+		   PROMENI_DIMENZIJE,
+		   PREIMENUJ;
+}

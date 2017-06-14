@@ -1,0 +1,127 @@
+package listenersTree;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.tree.TreePath;
+
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Workspace;
+import model.WorkspaceModel;
+import view.MainWindow;
+import view.PageView;
+import view.Tree;
+import view.TreePopupMenu;
+import view.WorkArea;
+import view.WorkspacePopupMenu;
+
+public class TreePopupMenuClickListener extends MouseAdapter {
+	private WorkspaceModel model;
+	private Tree tree;
+	private PageView pages;
+	
+	
+	public TreePopupMenuClickListener(WorkspaceModel model, Tree tree){
+		this.model = model;
+		this.tree  = tree;
+	}
+	public void mouseClicked(MouseEvent e){
+		if (e.getClickCount() == 2) {
+			if(tree.getSelected() instanceof GeRuDokument){				
+				if(WorkArea.getInstance().getTabCount()>0 && WorkArea.getInstance().getTitleAt(0).equals("orengvoiseur823ru"))
+					
+					WorkArea.getInstance().removeTabAt(0);		
+				
+			/*	int a= WorkArea.getInstance().getTabCount();
+				if(a>0){
+					for(int j=0; j<a; j++){
+						if(WorkArea.getInstance().getTitleAt(j).equals(((GeRuDokument)tree.getSelected()).getName())){
+							WorkArea.getInstance().removeTabAt(j);	
+							WorkArea.getInstance().setSelectedIndex(j);
+							WorkArea.getInstance().revalidate();
+							WorkArea.getInstance().repaint();
+							MainWindow.getInstance().tabbedPane.revalidate();
+							MainWindow.getInstance().tabbedPane.repaint();
+							MainWindow.getInstance().tabbedPane.setVisible(true);
+							return;
+						}	
+					
+					}
+				}
+				PageView pv = new PageView(tree);
+				
+				
+				WorkArea.getInstance().addTab(((GeRuDokument)tree.getSelected()).getName(), pv.getPane());
+				WorkArea.getInstance().revalidate();
+				WorkArea.getInstance().repaint();
+				MainWindow.getInstance().tabbedPane.revalidate();
+				MainWindow.getInstance().tabbedPane.repaint();
+				MainWindow.getInstance().tabbedPane.setVisible(true);*/
+			}
+		}
+	}
+	public void mousePressed(MouseEvent e){
+		if(SwingUtilities.isRightMouseButton(e)){
+	         int selRow = tree.getRowForLocation(e.getX(), e.getY());
+	         TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+	                 tree.setSelectionPath(selPath); 
+	                 if (selRow>-1){
+	                    tree.setSelectionRow(selRow); 
+	                 }
+		}
+		if(!(tree.getSelected() instanceof Workspace ||
+				tree.getSelected() instanceof GeRuDokument ||
+				tree.getSelected() instanceof Page ||
+				tree.getSelected() instanceof Project) && e.isPopupTrigger()){
+					doPopWorkspace(e);
+					return;
+		}
+        if (e.isPopupTrigger())
+            doPop(e);
+    }
+
+    public void mouseReleased(MouseEvent e){
+    	if(SwingUtilities.isRightMouseButton(e)){
+	         int selRow = tree.getRowForLocation(e.getX(), e.getY());
+	         TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+	                 tree.setSelectionPath(selPath); 
+	                 if (selRow>-1){
+	                    tree.setSelectionRow(selRow); 
+	                 }
+		}
+		if(!(tree.getSelected() instanceof Workspace ||
+			tree.getSelected() instanceof Project ||
+			tree.getSelected() instanceof GeRuDokument ||
+			tree.getSelected() instanceof Page ) && e.isPopupTrigger()){
+				doPopWorkspace(e);
+				return;
+		}
+        if (e.isPopupTrigger())
+            doPop(e);
+    }
+    private void doPopWorkspace(MouseEvent e){
+    	WorkspacePopupMenu menu = new WorkspacePopupMenu(model,tree);
+    	menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+    private void doPop(MouseEvent e){
+        TreePopupMenu menu = new TreePopupMenu(model, tree);
+        menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+	public WorkspaceModel getModel() {
+		return model;
+	}
+
+	public void setModel(WorkspaceModel model) {
+		this.model = model;
+	}
+}

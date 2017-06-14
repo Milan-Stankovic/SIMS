@@ -1,0 +1,26 @@
+package controller.factory;
+
+public class ElementFactory extends DocumentBuilding {
+	
+	private double width; // NEMA U CLASS
+	private double height; // NEMA U CLASS
+	private double x; // NEMA U CLASS
+	private double y; // NEMA U CLASS
+
+	public ElementFactory(double x, double y, double height, double width) {
+		// TODO Auto-generated constructor stub
+		
+		this.name="Element";
+		this.path="Element";
+		this.width=width;
+		this.height = height;
+		this.x=x;
+		this.y=y;
+	}
+	@Override
+	public Object build(String path) {
+		// TODO Auto-generated method stub
+		return null; // Ko ti je rekao elemente da pravis
+	}
+	
+}

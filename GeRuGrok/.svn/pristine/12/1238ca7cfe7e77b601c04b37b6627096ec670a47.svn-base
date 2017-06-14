@@ -1,0 +1,68 @@
+package dialogs;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class DialogCloseListener implements MouseListener {
+	private AddPageDialog apd;
+	private AddSlotDialog asd;
+	private ShowPropertiesNodeDialog spd;
+	
+	public DialogCloseListener(AddPageDialog apd) {
+		this.apd = apd;
+		this.asd = null;
+		this.spd=null;
+	}
+	public DialogCloseListener(AddSlotDialog asd) {
+		this.apd = null;
+		this.asd = asd;
+		this.spd=null;
+	}
+	public DialogCloseListener(ShowPropertiesNodeDialog spd) {
+		this.apd = null;
+		this.asd = null;
+		this.spd=spd;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(asd!=null){
+			asd.dispose();
+			return;
+		}
+		if(apd!=null){
+			apd.dispose();
+			return;
+		}
+		if(spd!=null){
+			spd.dispose();
+			return;
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}
+

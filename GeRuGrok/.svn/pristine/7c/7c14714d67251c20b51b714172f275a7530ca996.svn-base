@@ -1,0 +1,55 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import dialogs.AddSlotDialog;
+import model.Page;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class AddSlotListener  implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public AddSlotListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree = t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Object selected = tree.getSelected();
+		if(selected instanceof Page){
+			AddSlotDialog asd = new AddSlotDialog((Page)selected, model);
+			//Dodao sam u addslotdialogu command
+			asd.setVisible(true);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

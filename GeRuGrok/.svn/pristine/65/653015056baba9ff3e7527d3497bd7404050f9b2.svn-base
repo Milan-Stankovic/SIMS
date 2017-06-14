@@ -1,0 +1,27 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import controller.command.CommandManager;
+import controller.command.CutCommand;
+import controller.command.PasteCommand;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class PasteListener implements ActionListener{
+	private WorkspaceModel model;
+	private Tree tree;	
+	public PasteListener(WorkspaceModel m, Tree t){
+		this.model = m;
+		this.tree = t;
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		Object selected = tree.getSelected();
+		CommandManager cmd = CommandManager.getCMD();
+		cmd.addAbstractCommand(new PasteCommand(selected, tree));
+		
+	}
+}

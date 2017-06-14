@@ -1,0 +1,52 @@
+package listeners;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import controller.command.CommandManager;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class RedoListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public RedoListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree=t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		CommandManager cmd = CommandManager.getCMD();
+		int aktivna =cmd.getActivePosition();
+		cmd.doCommand();
+		model.reload();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

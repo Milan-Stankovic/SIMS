@@ -1,0 +1,32 @@
+package controller.command;
+
+import model.GeRuDokument;
+import model.Project;
+
+public class AddDocumentCommand extends AbstractCommand {
+
+	private Project parent;
+
+	private GeRuDokument child;
+
+	public AddDocumentCommand(Project parent, GeRuDokument child) {
+	      // TODO: implement
+		this.child=child;
+		this.parent=parent;
+		this.selectedObject=child;
+	   }
+
+	public boolean doCommand() {
+		
+		RemoveDocument r = new RemoveDocument(parent, child);
+		return r.undoCommand();
+		
+	}
+
+	public boolean undoCommand() {
+	
+		RemoveDocument r = new RemoveDocument(parent, child);
+		return r.doCommand();
+	}
+
+}

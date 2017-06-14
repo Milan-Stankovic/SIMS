@@ -1,0 +1,95 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultTreeModel;
+
+import controller.command.AddPageCommand;
+import controller.command.CommandManager;
+import dialogs.AddPageDialog;
+import model.GeRuDokument;
+import model.Page;
+import model.Slot;
+import view.Tree;
+
+public class AddPageDialogListener implements MouseListener {
+	private String name;
+	private double width;
+	private double height;	
+	private AddPageDialog apd;
+	private GeRuDokument grd;
+	private DefaultTreeModel model;
+	private Tree tree;
+	
+	public AddPageDialogListener(AddPageDialog apd, GeRuDokument grd, DefaultTreeModel model, Tree t) {
+		this.apd = apd;
+		this.grd =grd;
+		this.model= model;
+		tree=t;
+		name="";
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		name=AddPageDialog.tfName.getText();
+		try{
+		height = Double.parseDouble(AddPageDialog.tfHeight.getText());
+		width = Double.parseDouble(AddPageDialog.tfWidth.getText());
+		} catch(Exception exception ){
+			JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+			return;	
+		}
+		if(name.isEmpty()){
+			JOptionPane.showMessageDialog(null,"Name is empty. Please, fill up.");
+			return;			
+		}
+		if( width<1 || height<1){
+			JOptionPane.showMessageDialog(null,"Width or Height is not valid.");
+			return;	
+		}
+		Page page = new Page();
+		page.setName(name);
+		page.setHeight(height);
+		page.setWidth(width);
+		page.setSlots(new ArrayList<Slot>());
+		page.setUniqueID(UUID.randomUUID());
+		page.addObserver(tree);
+		
+		
+		CommandManager cmd = CommandManager.getCMD();
+		cmd.addAbstractCommand(new AddPageCommand(  grd,page ));
+		//grd.getPages().add(page);
+		model.reload();
+		apd.dispose();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}
+

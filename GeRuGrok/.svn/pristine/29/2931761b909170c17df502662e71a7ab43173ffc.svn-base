@@ -1,0 +1,90 @@
+package listenersTree;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import model.GeRuDokModel;
+import model.JsonModel;
+import model.Workspace;
+import model.WorkspaceModel;
+import view.Tree;
+
+public class NewWorkspaceListener implements MouseListener {
+	
+	private WorkspaceModel model;
+	private Tree tree;
+	
+	public NewWorkspaceListener(WorkspaceModel m, Tree t) {
+		this.model = m;
+		this.tree=t;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(!tree.isShowing()){
+			String name = JOptionPane.showInputDialog(null, "Please enter a name for your Workspace: ");
+			if(name==null){
+				return;
+			}
+			name=name.trim();
+			if(!name.isEmpty()){
+				
+				Workspace root = new Workspace(name, "", tree);
+				model.setRoot(root);
+				tree.setModel(new WorkspaceModel(root));
+				tree.show();
+				GeRuDokModel gmd=GeRuDokModel.getInstance();
+				gmd.setActiveWorkspace(root);
+			}
+			return;
+		}
+		
+		int confirm = JOptionPane.showConfirmDialog(null, "Do you want to save workspace before closing?","alert", JOptionPane.YES_NO_CANCEL_OPTION);
+		if(confirm==0){
+			JsonModel jm = new JsonModel();
+			jm.saveModel((Workspace)model.getRoot());
+		}
+		model.setRoot(null);
+		
+		tree.show(false);
+		String name = JOptionPane.showInputDialog(null, "Please enter a name for your Workspace: ");
+		name=name.trim();
+		Workspace root = new Workspace(name, "", tree);
+		
+		GeRuDokModel gmd=GeRuDokModel.getInstance();
+		gmd.setActiveWorkspace(root);
+		model.setRoot(root);
+		tree.setModel(new WorkspaceModel(root));
+		tree.show();
+		
+		
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

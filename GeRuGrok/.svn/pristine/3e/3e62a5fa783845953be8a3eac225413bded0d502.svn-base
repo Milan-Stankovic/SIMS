@@ -1,0 +1,107 @@
+package dialogs;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class OpenFileBrowserListener implements MouseListener {
+
+	private static String path;
+	private JTextField tfName;
+	private boolean work = false;
+	private boolean proj = false;
+	public OpenFileBrowserListener(JTextField tfName){
+		path="";
+		this.tfName=tfName;
+	}
+	public OpenFileBrowserListener(JTextField tfName, int i){
+		path="";
+		this.tfName=tfName;
+		if(i==0)
+			work=true;
+		if (i==1)
+			proj=true;
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(work){
+			JFileChooser chooser = new JFileChooser();
+			FileFilter filter =new FileNameExtensionFilter("work", "WORK");
+			
+			chooser.setAcceptAllFileFilterUsed(false);
+			chooser.setFileFilter(filter);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			
+			chooser.setAcceptAllFileFilterUsed(false);
+			int response=chooser.showOpenDialog(null);
+			if( response ==JFileChooser.APPROVE_OPTION){
+				setPath(chooser.getSelectedFile().getAbsolutePath());
+				tfName.setText(path);
+			}
+			return;
+		}
+		if(proj){
+			JFileChooser chooser = new JFileChooser();
+			FileFilter filter =new FileNameExtensionFilter("proj", "PROJ");
+			
+			chooser.setAcceptAllFileFilterUsed(false);
+			chooser.setFileFilter(filter);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			
+			chooser.setAcceptAllFileFilterUsed(false);
+			int response=chooser.showOpenDialog(null);
+			if( response ==JFileChooser.APPROVE_OPTION){
+				setPath(chooser.getSelectedFile().getAbsolutePath());
+				tfName.setText(path);
+			}
+			return;
+		}
+		JFileChooser chooser = new JFileChooser();
+		
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		chooser.setAcceptAllFileFilterUsed(false);
+		int response=chooser.showOpenDialog(null);
+		if( response ==JFileChooser.APPROVE_OPTION){
+			setPath(chooser.getSelectedFile().getAbsolutePath());
+			tfName.setText(path);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	
+}

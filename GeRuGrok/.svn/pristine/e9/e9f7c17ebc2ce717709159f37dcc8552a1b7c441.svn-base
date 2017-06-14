@@ -1,0 +1,41 @@
+package controller;
+
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.AbstractAction;
+
+public class HelpAction extends AbstractAction {
+
+	@Override
+	public void actionPerformed(ActionEvent ev) {
+		// TODO Auto-generated method stub
+		/*try {
+			Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+			s = s.replace('\\', '/');
+			System.out.println(ev.getActionCommand());
+			
+			Desktop.getDesktop().browse(new URI(s+"/src/help/GeRuDokHelpSRP.html"));
+			Desktop.getDesktop().browse(new URI(s+"/src/help/GeRuDokHelpENG.html"));
+			
+		} catch (IOException | URISyntaxException e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		try {
+			Runtime.getRuntime().exec("hh.exe src/help/GeRuDokHelpENG.chm");
+			//Runtime.getRuntime().exec("hh.exe src/help/GeRuDokHelpSRP.chm");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

@@ -1,0 +1,43 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import model.GeRuDokModel;
+import model.JsonModel;
+import view.MainWindow;
+
+public class SaveAsListener implements ActionListener{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Specify a file location to save");   
+		FileNameExtensionFilter Filter = new FileNameExtensionFilter("work", "WORK");
+		if(GeRuDokModel.getInstance().getActiveWorkspace()==null){
+			JOptionPane.showMessageDialog(null, "There is no Workspace to save!");
+		}else{
+			String workspace = GeRuDokModel.getInstance().getActiveWorkspace().getName();
+			fileChooser.setSelectedFile(new File(workspace + "(1)"));
+	        // add filters
+			fileChooser.addChoosableFileFilter(Filter);
+			fileChooser.setFileFilter(Filter);
+	
+			 
+			int userSelection = fileChooser.showSaveDialog(MainWindow.getInstance());
+			 
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				JsonModel jm = new JsonModel();
+				
+				jm.saveModel(GeRuDokModel.getInstance().getActiveWorkspace());
+			}
+		}
+	}
+
+}

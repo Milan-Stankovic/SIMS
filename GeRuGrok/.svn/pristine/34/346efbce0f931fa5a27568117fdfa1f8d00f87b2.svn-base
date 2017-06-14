@@ -1,0 +1,11 @@
+/**
+ * 
+ */
+/**
+ * @author milan
+ *
+ */
+package controller.observerArg;
+
+// Preimenovati sve klase 
+// Dovoljan je jedan Enum nema potrebe za 4 razlicitia

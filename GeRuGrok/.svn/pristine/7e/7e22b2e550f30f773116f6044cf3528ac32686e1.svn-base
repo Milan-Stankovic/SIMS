@@ -1,0 +1,85 @@
+package listenersTree;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
+import dialogs.EditDeleteSlotDialog;
+import model.GeRuDokument;
+import model.Page;
+import model.Project;
+import model.Workspace;
+import view.MainWindow;
+import view.PageView;
+import view.Tree;
+import view.WorkArea;
+
+public class DeleteChoosenSlot implements ActionListener{
+	
+	private EditDeleteSlotDialog dial;
+	private Tree tree;
+	private Page page; 
+	
+	public DeleteChoosenSlot(EditDeleteSlotDialog edsd, Page p, Tree tree) {
+		this.dial = edsd;
+		this.tree = tree;
+		this.page = p;
+	}
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(dial.slot.getSelectedIndex()==-1){
+			JOptionPane.showMessageDialog(null, "There is no Slot to be deleted.");
+			return;
+		}
+		dial.getPage().getSlots().remove(dial.slot.getSelectedIndex());
+		
+		Workspace w = (Workspace) tree.getModel().getRoot();
+		ArrayList<Project> projs = w.getProjects();
+		for(Project p : projs){
+			ArrayList<GeRuDokument> docs = p.getGerudokuments();
+			for(GeRuDokument grd : docs){
+				if(grd.containsChild(page.getUniqueID())){
+					
+					PageView pv = new PageView(grd);
+					if(grd instanceof GeRuDokument){				
+						if(WorkArea.getInstance().getTabCount()>0 && WorkArea.getInstance().getTitleAt(0).equals("orengvoiseur823ru"))
+							
+							WorkArea.getInstance().removeTabAt(0);		
+					}
+					int a= WorkArea.getInstance().getTabCount();
+					if(a>0){
+						for(int j=0; j<a; j++){
+							if(WorkArea.getInstance().getTitleAt(j).contains(grd.getUniqueID().toString())){
+								WorkArea.getInstance().removeTabAt(j);	
+							}
+						}
+					}
+					String name = (grd.getName() + " (" + grd.getUniqueID().toString() +")");
+					
+					WorkArea.getInstance().add(name, new JScrollPane(pv));
+					WorkArea.getInstance().revalidate();
+					WorkArea.getInstance().repaint();
+					MainWindow.getInstance().tabbedPane.revalidate();
+					MainWindow.getInstance().tabbedPane.repaint();
+					MainWindow.getInstance().tabbedPane.setVisible(true);
+					
+					
+					
+					
+				}
+			}
+		}
+		
+		
+		dial.dispose();
+	}
+
+	
+	
+}

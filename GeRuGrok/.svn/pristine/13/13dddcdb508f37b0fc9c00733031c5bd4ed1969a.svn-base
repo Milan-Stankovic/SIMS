@@ -1,0 +1,32 @@
+package model;
+
+public class Clipboard {
+
+		private Object content;
+		private ClipboardContentType type;
+		
+
+		public ClipboardContentType getType() {
+			return type;
+		}
+
+		public void setType(ClipboardContentType type) {
+			this.type = type;
+		}
+
+		public void setContent(Object content) {
+			this.content = content;
+		}
+
+		public Object getContent() {
+			return content;
+		}
+
+		
+		
+		public Clipboard()
+		{
+			type=ClipboardContentType.EMPTY;
+			content=null;
+		}
+}

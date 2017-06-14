@@ -1,0 +1,31 @@
+package controller.command;
+
+import model.Project;
+import model.ShareTypes;
+import model.Workspace;
+
+public class RemoveProject extends AbstractCommand {
+
+	private Workspace parent;
+
+	private Project child;
+	
+	public RemoveProject(Workspace parent, Project child) {
+		
+		this.parent = parent;
+		this.child = child;
+		selectedObject = child;
+		
+	}
+
+	public boolean doCommand() {
+	
+		return parent.deleteChild(child.getUniqueID());
+	}
+
+	public boolean undoCommand() {
+		
+		return parent.addChild(child);
+	}
+
+}

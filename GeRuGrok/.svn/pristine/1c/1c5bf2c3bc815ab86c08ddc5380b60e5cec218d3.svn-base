@@ -1,0 +1,31 @@
+package controller.command;
+
+import model.GeRuDokument;
+import model.Project;
+import model.ShareTypes;
+
+public class RemoveDocument extends AbstractCommand {
+
+	private GeRuDokument child;
+
+	private Project parent;
+	
+	private ShareTypes type; // DODATI U KLAS DIAGRAM
+
+	public RemoveDocument(Project parent, GeRuDokument child) {
+		// TODO: implement
+		this.parent = parent;
+		this.child = child;
+		//child.addOwner(parent);
+		selectedObject = child;
+		type=child.getOwner(child.getUniqueID());
+	}
+
+	public boolean doCommand() {
+		return parent.deleteChild(child.getUniqueID());
+	}
+
+	public boolean undoCommand() {
+		return parent.addChild(child, type);
+	}
+}
